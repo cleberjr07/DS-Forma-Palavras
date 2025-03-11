@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6801921897489543442
 RectTransform:
   m_ObjectHideFlags: 0
@@ -147,9 +147,10 @@ GameObject:
   - component: {fileID: 4754032957639679924}
   - component: {fileID: 2683351628561131688}
   - component: {fileID: 6850409227646443468}
+  - component: {fileID: -8990272665049342221}
   m_Layer: 5
   m_Name: F
-  m_TagString: F
+  m_TagString: LetterContainer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -284,3 +285,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-8990272665049342221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9162360920044279498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e8fa10ddbaf8154db9de08caca48969, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Letter: F
+  WordIndex: 0
+  LetterIndex: 0
+  Matched: 0

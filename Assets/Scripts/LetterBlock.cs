@@ -6,7 +6,12 @@ public class LetterBlock : MonoBehaviour, IDragHandler, IEndDragHandler
     private RectTransform _rect;
     private Vector2 _initialPosition;
     private GameObject _letterContainer;
-    [SerializeField] private string _Letter = "A";
+
+    [Header("Variaveis de Configuração")]
+    public string Letter = "A";
+    public bool Matched = false;
+
+
     [Header("Debug Variables - Don't alterate")]
     [SerializeField] private bool _isTouchingCorrectBlock = false;
     [SerializeField] private bool _isInCorrectPlace = false;
@@ -36,6 +41,7 @@ public class LetterBlock : MonoBehaviour, IDragHandler, IEndDragHandler
             _isInCorrectPlace = true;
 
             _letterContainer.tag = "Untagged"; // para evitar que mais de uma letra seja posta no mesmo letterContainer
+
         }
         else
             _rect.localPosition = _initialPosition;
@@ -43,26 +49,30 @@ public class LetterBlock : MonoBehaviour, IDragHandler, IEndDragHandler
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(_Letter))
-        {
-            _isTouchingCorrectBlock = true;
-            _letterContainer = other.gameObject;
-        }
+        LetterCheck(other.gameObject, true);
     }
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag(_Letter))
-        {
-            _isTouchingCorrectBlock = true;
-            _letterContainer = other.gameObject;
-        }
+        LetterCheck(other.gameObject, true);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag(_Letter))
-            _isTouchingCorrectBlock = false;
+        LetterCheck(other.gameObject, false);
+    }
+
+    private void LetterCheck(GameObject other, bool entering)
+    {
+        if (!other.CompareTag("LetterContainer"))
+            return;
+
+        LetterContainer lt = other.GetComponent<LetterContainer>();
+        if (lt == null || lt.Letter != Letter)
+            return;
+
+        _letterContainer = entering ? other : null;
+        _isTouchingCorrectBlock = entering;
     }
 
 }

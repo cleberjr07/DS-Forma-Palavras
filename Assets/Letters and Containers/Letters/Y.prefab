@@ -91,7 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9ecab503de86c499486249671a7eae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Letter: Y
+  Letter: Y
+  Matched: 0
   _isTouchingCorrectBlock: 0
   _isInCorrectPlace: 0
 --- !u!61 &8889565632469217749
