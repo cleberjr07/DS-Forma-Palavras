@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class HintManager : MonoBehaviour
 {
@@ -95,6 +96,11 @@ public class HintManager : MonoBehaviour
                 if (lc.Matched == false)
                 {
                     Debug.Log("A proxima letra não colocada é " + lc.Letter + " E ela fica na wordIndex " + lc.WordIndex);
+
+                    LetterBlock lb = LetterBlocks.Find(lb => lb.Letter == lc.Letter);
+                    Animator anim = lb.GetComponent<Animator>();
+                    anim.Play("Null");
+                    anim.Play("Hint1");
                     return;
                 }
             }
@@ -103,5 +109,10 @@ public class HintManager : MonoBehaviour
 
         Debug.LogWarning("Nenhuma letra foi encontrada na FirstHint");
         // fazer com que na verdade a letra correspondente brilhe
+    }
+
+    private void SearchLetterBlock(string letter)
+    {
+        
     }
 }

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 234262547132906263}
   - component: {fileID: 8889565632469217749}
   - component: {fileID: 233141654151350826}
+  - component: {fileID: 6754757183841526045}
   m_Layer: 5
   m_Name: F
   m_TagString: LetterBlock
@@ -94,7 +95,6 @@ MonoBehaviour:
   Letter: F
   Matched: 0
   _isTouchingCorrectBlock: 0
-  _isInCorrectPlace: 0
 --- !u!61 &8889565632469217749
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -167,6 +167,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &6754757183841526045
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4334353101914686782}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e6f760817f03b9948a0f3e2563d995f9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7924904774961867028
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,12 +280,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 89.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 500
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512

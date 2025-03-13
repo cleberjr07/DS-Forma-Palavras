@@ -14,7 +14,6 @@ public class LetterBlock : MonoBehaviour, IDragHandler, IEndDragHandler
 
     [Header("Debug Variables - Don't alterate")]
     [SerializeField] private bool _isTouchingCorrectBlock = false;
-    [SerializeField] private bool _isInCorrectPlace = false;
     void Start()
     {
         _rect = GetComponent<RectTransform>();
@@ -23,7 +22,7 @@ public class LetterBlock : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (_isInCorrectPlace)
+        if (Matched)
             return;
 
         _rect.position = eventData.position;
@@ -31,20 +30,24 @@ public class LetterBlock : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (_isInCorrectPlace)
+        if (Matched)
             return;
 
-        if (_isTouchingCorrectBlock)
+        if (!_isTouchingCorrectBlock)
         {
-            gameObject.transform.SetParent(_letterContainer.transform);
-            _rect.position = _letterContainer.GetComponent<RectTransform>().position;
-            _isInCorrectPlace = true;
-
-            _letterContainer.tag = "Untagged"; // para evitar que mais de uma letra seja posta no mesmo letterContainer
-
-        }
-        else
             _rect.localPosition = _initialPosition;
+            return;
+        }
+
+        gameObject.transform.SetParent(_letterContainer.transform); // prende a letra no container
+        _rect.position = _letterContainer.GetComponent<RectTransform>().position; // prende a letra no seu container
+        Matched = true;
+
+        _letterContainer.tag = "Untagged"; // para evitar que mais de uma letra seja posta no mesmo letterContainer
+        _letterContainer.GetComponent<LetterContainer>().Matched = true; // coloca o container como completo
+
+
+        HintManager.instance.ResetHintTimer(); // reseta o timer pra dicas, já que o jogador conseguiu acertar uma das letras
     }
 
     void OnTriggerEnter2D(Collider2D other)
