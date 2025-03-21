@@ -1,18 +1,20 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class HintManager : MonoBehaviour
 {
     [Header("Variaveis de controle")]
     [SerializeField] private float[] _tempoParaDicas = new float[3];
 
+    [Header("Sons")]
+    [SerializeField] private AudioClip[] _hintSounds;
+
     [Header("Debug variables Don't Change")]
     [SerializeField] private int _currentHintIndex = 0;
-    [SerializeField] private bool _hintTimerRunning = false;
+    public bool HintTimerRunning = false;
     [SerializeField] private float _hintTimer = 0f;
 
     public List<LetterBlock> LetterBlocks = new List<LetterBlock>();
@@ -26,15 +28,23 @@ public class HintManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(this);   
         }
+        else
+            Destroy(gameObject);
+    }
 
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-        // isso é só pra debug, deletar depois
-        GetLetterBlocksAndContainers();
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     void Update()
     {
-        if (_hintTimerRunning && _currentHintIndex < 3) // se for 3 é pq significa que todas as dicas ja foram tocadas
+        if (HintTimerRunning && _currentHintIndex < 3) // se for 3 é pq significa que todas as dicas ja foram tocadas
         {
             _hintTimer -= Time.deltaTime;
 
@@ -46,16 +56,19 @@ public class HintManager : MonoBehaviour
                         Hint1();
                     break;
                     case 1:
-                        Hint1();
+                        Hint2();
                     break;
                     case 2:
-                        Hint1();
+                        Hint3();
+                    break;
+                    default:
+                        Hint2();
                     break;
                 }
 
                 _currentHintIndex++;
-                if (_currentHintIndex >= _tempoParaDicas.Length) // faz com que caso passe da última dica, começe denovo
-                    _currentHintIndex = 0;
+                if (_currentHintIndex >= _tempoParaDicas.Length)
+                    _currentHintIndex = _tempoParaDicas.Length - 1;
 
                 _hintTimer = _tempoParaDicas[_currentHintIndex];
             }
@@ -89,7 +102,10 @@ public class HintManager : MonoBehaviour
 
     public void Hint1()
     {
-        for (int i = 1; i <= 5; i++)
+        if (LetterContainers.Count == 0 || LetterBlocks.Count == 0)
+            GetLetterBlocksAndContainers();
+
+        for (int i = 0; i <= GameController.instance.WordsCount; i++)
         {   
             foreach(LetterContainer lc in LetterContainers.Where(lc => lc.WordIndex == i))
             {
@@ -97,7 +113,7 @@ public class HintManager : MonoBehaviour
                 {
                     Debug.Log("A proxima letra não colocada é " + lc.Letter + " E ela fica na wordIndex " + lc.WordIndex);
 
-                    LetterBlock lb = LetterBlocks.Find(lb => lb.Letter == lc.Letter);
+                    LetterBlock lb = LetterBlocks.Find(lb => lb.Letter == lc.Letter && lb.Matched == false);
                     Animator anim = lb.GetComponent<Animator>();
                     anim.Play("Null");
                     anim.Play("Hint1");
@@ -107,12 +123,79 @@ public class HintManager : MonoBehaviour
         }
 
 
-        Debug.LogWarning("Nenhuma letra foi encontrada na FirstHint");
-        // fazer com que na verdade a letra correspondente brilhe
+        Debug.LogWarning("Nenhuma letra foi encontrada na Hint1");
     }
 
-    private void SearchLetterBlock(string letter)
+    public void Hint2()
     {
-        
+        if (LetterContainers.Count == 0 || LetterBlocks.Count == 0)
+            GetLetterBlocksAndContainers();
+
+        for (int i = 0; i <= GameController.instance.WordsCount; i++)
+        {   
+            foreach(LetterContainer lc in LetterContainers.Where(lc => lc.WordIndex == i))
+            {
+                if (lc.Matched == false)
+                {
+                    Debug.Log("A proxima letra não colocada é " + lc.Letter + " E ela fica na wordIndex " + lc.WordIndex);
+
+                    LetterBlock lb = LetterBlocks.Find(lb => lb.Letter == lc.Letter && lb.Matched == false);
+                    Animator anim = lb.GetComponent<Animator>();
+                    anim.Play("Null");
+                    anim.Play("Hint2");
+                    SoundFXManager.instance.PlaySoundFXClip(_hintSounds, transform.position, 1f, false);
+                    return;
+                }
+            }
+        }
+
+
+        Debug.LogWarning("Nenhuma letra foi encontrada na Hint2");
     }
+
+    public void Hint3()
+    {
+        if (LetterContainers.Count == 0 || LetterBlocks.Count == 0)
+            GetLetterBlocksAndContainers();
+
+        for (int i = 0; i <= GameController.instance.WordsCount; i++)
+        {   
+            foreach(LetterContainer lc in LetterContainers.Where(lc => lc.WordIndex == i))
+            {
+                if (lc.Matched == false)
+                {
+                    Debug.Log("A proxima letra não colocada é " + lc.Letter + " E ela fica na wordIndex " + lc.WordIndex);
+
+                    LetterBlock lb = LetterBlocks.Find(lb => lb.Letter == lc.Letter && lb.Matched == false);
+                    Animator anim = lb.GetComponent<Animator>();
+                    anim.Play("Null");
+                    anim.Play("Hint2");
+
+                    Animator blockAnim = lc.GetComponent<Animator>();
+                    blockAnim.Play("Hint3"); // não tem null na frente pq eu n quero que refaça depois da primeira vez
+                    SoundFXManager.instance.PlaySoundFXClip(_hintSounds, transform.position, 1f, false);
+                    return;
+                }
+            }
+        }
+
+
+        Debug.LogWarning("Nenhuma letra foi encontrada na Hint3");
+    }
+
+    #region startingLevel
+
+    public void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
+    {
+        if (!scene.name.Contains("Level")) // se não tem level no nome da cena, não é um level, logo não precisa do hint manager
+            return;
+        
+
+        _hintTimer = _tempoParaDicas[0];
+        _currentHintIndex = 0;
+        HintTimerRunning = true;
+
+        Debug.Log("Level iniciado, sistema de dicas ligado");
+    }
+    #endregion
 }

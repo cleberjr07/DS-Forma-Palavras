@@ -1,23 +1,51 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class LetterBlock : MonoBehaviour, IDragHandler, IEndDragHandler
+public class LetterBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private RectTransform _rect;
     private Vector2 _initialPosition;
     private GameObject _letterContainer;
+    private Animator _anim;
 
     [Header("Variaveis de Configuração")]
-    public string Letter = "A";
+    public string Letter = "X";
     public bool Matched = false;
 
+    [Header("Sons")]
+    [SerializeField] private AudioClip[] _correctLetterSound;
+    [SerializeField] private AudioClip[] _wrongLetterSound;
 
     [Header("Debug Variables - Don't alterate")]
     [SerializeField] private bool _isTouchingCorrectBlock = false;
+
+    #region Debug and Editor Stuff
+    [SerializeField] TextMeshProUGUI _letterText;
+    void OnValidate()
+    {
+        if (_letterText == null)
+            _letterText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+        _letterText.text = Letter;
+
+        gameObject.name = Letter;
+    }
+    #endregion
+
     void Start()
     {
         _rect = GetComponent<RectTransform>();
         _initialPosition = _rect.localPosition;
+        _anim = GetComponent<Animator>();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (Matched)
+            return;
+
+        _anim.Play("Null");
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -36,8 +64,11 @@ public class LetterBlock : MonoBehaviour, IDragHandler, IEndDragHandler
         if (!_isTouchingCorrectBlock)
         {
             _rect.localPosition = _initialPosition;
+            SoundFXManager.instance.PlaySoundFXClip(_wrongLetterSound, transform.position, 1f, false);
             return;
         }
+        
+        SoundFXManager.instance.PlaySoundFXClip(_correctLetterSound, transform.position, 1f, false);
 
         gameObject.transform.SetParent(_letterContainer.transform); // prende a letra no container
         _rect.position = _letterContainer.GetComponent<RectTransform>().position; // prende a letra no seu container
@@ -48,6 +79,8 @@ public class LetterBlock : MonoBehaviour, IDragHandler, IEndDragHandler
 
 
         HintManager.instance.ResetHintTimer(); // reseta o timer pra dicas, já que o jogador conseguiu acertar uma das letras
+        HintManager.instance.ResetHintIndex(); // reseta o index da hint, para que ele não use hints fortes depois de ter resetado
+        GameController.instance.OnMatchLetter(); // testa se todas as letras ja foram colocadas no lugar correto
     }
 
     void OnTriggerEnter2D(Collider2D other)

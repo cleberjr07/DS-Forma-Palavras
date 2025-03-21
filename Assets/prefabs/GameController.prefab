@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3839696190710925788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6654347541623834625}
+  - component: {fileID: 5293860925654520493}
+  - component: {fileID: 2330795683827223001}
+  - component: {fileID: 4546602472804293544}
+  - component: {fileID: 4609303681989205401}
+  m_Layer: 0
+  m_Name: GameController
+  m_TagString: GameController
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6654347541623834625
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3839696190710925788}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1203.6317, y: 251.66206, z: -2.390834}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5293860925654520493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3839696190710925788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d704586aecc767489b35b0a70b0f33b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LettersCount: 0
+  WordsCount: 0
+  _VictorySound:
+  - {fileID: 8300000, guid: bc76461a92f7c9847acbc9510a4c2d94, type: 3}
+  _LevelMusic:
+  - {fileID: 8300000, guid: c8b849bf174ac05428a9bd85707f0648, type: 3}
+--- !u!114 &2330795683827223001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3839696190710925788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e2eaff96211bfd4fa1b28250f1076e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tempoParaDicas:
+  - 5
+  - 5
+  - 5
+  _hintSounds:
+  - {fileID: 8300000, guid: 0575a93f1a7ef524c92adebc9f989e08, type: 3}
+  _currentHintIndex: 0
+  HintTimerRunning: 0
+  _hintTimer: 0
+  LetterBlocks: []
+  LetterContainers: []
+--- !u!114 &4546602472804293544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3839696190710925788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bfa5788d24be424db9ec7b42e09168e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundFXObj: {fileID: 5284025256681746028, guid: 78060d12fdc6c9d49b863ab3dda49d4a, type: 3}
+  _musicFXObj: {fileID: 5633099801341637471, guid: 36fbe0d656abf5a4b9b34a6a24e81727, type: 3}
+--- !u!114 &4609303681989205401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3839696190710925788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e398c94d2496e4cbce97bc0ede1e29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixer: {fileID: 24100000, guid: 99a540011210f534785f01e4ba4a36d4, type: 2}
