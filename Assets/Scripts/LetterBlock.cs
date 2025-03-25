@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Diagnostics;
+using System.IO;
 
 public class LetterBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -8,6 +10,7 @@ public class LetterBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private Vector2 _initialPosition;
     private GameObject _letterContainer;
     private Animator _anim;
+
 
     [Header("Variaveis de Configuração")]
     public string Letter = "X";
@@ -42,9 +45,12 @@ public class LetterBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (Matched)
+        if (Matched){
+        SessionData.instance.isDraging = true;
             return;
 
+        }
+    
         _anim.Play("Null");
     }
 
@@ -58,13 +64,17 @@ public class LetterBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (Matched)
+        if (Matched){
+
+        SessionData.instance.numAcertos++;
             return;
+        }
 
         if (!_isTouchingCorrectBlock)
         {
             _rect.localPosition = _initialPosition;
             SoundFXManager.instance.PlaySoundFXClip(_wrongLetterSound, transform.position, 1f, false);
+            SessionData.instance.numErros++;
             return;
         }
         
@@ -110,5 +120,7 @@ public class LetterBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         _letterContainer = entering ? other : null;
         _isTouchingCorrectBlock = entering;
     }
+    
+
 
 }
