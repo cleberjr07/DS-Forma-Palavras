@@ -15,8 +15,9 @@ public class SessionData : MonoBehaviour
     public float dragTimer = 0;
     public float totalDragTime = 0;
     public float avgDragTime = 0;
-    public string filepath = "caminho para o arquivo";
+    public string filePath = "";
     public bool isDraging = false;
+    private string head = "ID, Data, Duração da Sessão, Profissional Responsável, ID do Paciente, Nome do nível, Tempo gasto no nível, Erros, Dicas, Nivel finalizado, Derrotas, Comentario do Profissional";
 
     void Update()
     {
@@ -29,15 +30,20 @@ public class SessionData : MonoBehaviour
         totalDragTime = totalDragTime + dragTimer;
     }
 
-    private void saveData(float numAcertos, float numErros, float dragTimer, string id, string date, float sessionTime, string nameResp, int level){
-        numDrags = numAcertos + numErros;
-        avgDragTime = dragTimer/numDrags;
-        string data = $"{id},{nameResp}, {date},{sessionTime}, {numAcertos}, {numErros}, {numDrags}, {avgDragTime}";
+    private void saveData(string id, string date, float sessionTime, string nameResp, string paciID, int level,float spentTime, int  numErros, int numClues, int nivelEnd, int derrotas, string commentary){
+        string appPath = System.IO.Directory.GetCurrentDirectory();
+        filePath = appPath + "/Dados.csv";
+        if (new FileInfo(filePath).Length == 0){
+            using (StreamWriter writer = new StreamWriter(filePath, true)){
+                writer.WriteLine(head);
+            }
+        }
+        string data = ($"{id}, {date}, {sessionTime}, {nameResp}, {paciID}, {level}, {spentTime}, {numErros}, {numClues}, {nivelEnd}, {derrotas}, {commentary}");
         WriteToCSV(data);
     }
 
     public void WriteToCSV(string data){        
-        using (StreamWriter writer = new StreamWriter(filepath, true)){
+        using (StreamWriter writer = new StreamWriter(filePath, true)){
             writer.WriteLine(data);
         }
         
