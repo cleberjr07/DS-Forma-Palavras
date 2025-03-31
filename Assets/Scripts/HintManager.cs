@@ -44,6 +44,9 @@ public class HintManager : MonoBehaviour
 
     void Update()
     {
+        if (GameController.instance.GamePaused)
+            return;
+            
         if (HintTimerRunning && _currentHintIndex < 3) // se for 3 é pq significa que todas as dicas ja foram tocadas
         {
             _hintTimer -= Time.deltaTime;
@@ -171,8 +174,8 @@ public class HintManager : MonoBehaviour
                     anim.Play("Null");
                     anim.Play("Hint2");
 
-                    Animator blockAnim = lc.GetComponent<Animator>();
-                    blockAnim.Play("Hint3"); // não tem null na frente pq eu n quero que refaça depois da primeira vez
+                    Animator containerAnim = lc.GetComponent<Animator>();
+                    containerAnim.Play("Hint3"); // não tem null na frente pq eu n quero que refaça depois da primeira vez
                     SoundFXManager.instance.PlaySoundFXClip(_hintSounds, transform.position, 1f, false);
                     return;
                 }

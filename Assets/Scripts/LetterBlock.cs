@@ -12,6 +12,7 @@ public class LetterBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     [Header("Variaveis de Configuração")]
     public string Letter = "X";
     public bool Matched = false;
+    private bool _wronglyMatched = false;
 
     [Header("Sons")]
     [SerializeField] private AudioClip[] _correctLetterSound;
@@ -64,7 +65,11 @@ public class LetterBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if (!_isTouchingCorrectBlock)
         {
             _rect.localPosition = _initialPosition;
-            SoundFXManager.instance.PlaySoundFXClip(_wrongLetterSound, transform.position, 1f, false);
+
+            if (_wronglyMatched)
+                SoundFXManager.instance.PlaySoundFXClip(_wrongLetterSound, transform.position, 1f, false);
+                
+            GameController.instance.OnMissLetter(_wronglyMatched); // isso serve pra cuidar das vidas e também pra expor a quantidade de erros
             return;
         }
         
@@ -101,9 +106,14 @@ public class LetterBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private void LetterCheck(GameObject other, bool entering)
     {
         if (!other.CompareTag("LetterContainer"))
+        {
+            _wronglyMatched = false;
             return;
+        }
 
         LetterContainer lt = other.GetComponent<LetterContainer>();
+        _wronglyMatched = lt != null; // isso serve pra contabilizar os erros
+
         if (lt == null || lt.Letter != Letter)
             return;
 

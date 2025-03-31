@@ -6,6 +6,8 @@ public class GameController : MonoBehaviour
     public static GameController instance;
     public int LettersCount = 0;
     public int WordsCount = 0;
+    public int AmountOfLives = 3;
+    public bool GamePaused = false;
 
     
     [Header("Sons")]
@@ -70,7 +72,6 @@ public class GameController : MonoBehaviour
 
         if (LettersCount <= 0)
         {
-            Debug.Log("Você venceu essa cartela");
             GameObject.FindWithTag("WinPanel").transform.GetChild(0).gameObject.SetActive(true);
             SoundFXManager.instance.PlaySoundFXClip(_VictorySound, transform.position, 1f, false);
 
@@ -78,5 +79,22 @@ public class GameController : MonoBehaviour
             foreach(Transform musicObj in GameObject.FindWithTag("MusicObj").transform) // isso serve pra musica parar quando a cartela termina, senão fica muita poluição sonora
                 Destroy(musicObj.gameObject);
         }
+    }
+
+    public void OnMissLetter(bool letterContainerErrado)
+    {
+        // aqui da pra capturar a quantidade de erros e quantidade de vezes que a letra foi solta
+        AmountOfLives--;
+
+        if (AmountOfLives <= 0)
+        {
+            GamePaused = true;
+            GameObject.FindWithTag("LosePanel").transform.GetChild(0).gameObject.SetActive(true);
+        }
+    }
+
+    public void ResetLevelVariables()
+    {
+
     }
 }

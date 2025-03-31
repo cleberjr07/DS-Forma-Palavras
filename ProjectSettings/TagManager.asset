@@ -12,6 +12,7 @@ TagManager:
   - WinPanel
   - MusicObj
   - SoundObj
+  - LosePanel
   layers:
   - Default
   - TransparentFX
