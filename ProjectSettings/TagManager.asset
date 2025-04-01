@@ -13,6 +13,8 @@ TagManager:
   - MusicObj
   - SoundObj
   - LosePanel
+  - SessionTimer
+  - Lives
   layers:
   - Default
   - TransparentFX

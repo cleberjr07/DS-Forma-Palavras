@@ -7,4 +7,9 @@ public class InGameMenu : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+
+    public void ToggleTimerVisibility(bool visibility)
+    {
+        GameController.instance.DisplayTimer = visibility;
+    }
 }
